@@ -14,8 +14,6 @@ import java.util.concurrent.Executors;
 public abstract class ContactRoomDatabase extends RoomDatabase {
     public abstract ContactDao contactDao();    
     private static final int NUMBER_OF_THREADS = 4;
-
-
     public static volatile ContactRoomDatabase INSTANCE;
     public static final ExecutorService databaseWriteExecutor
             = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
