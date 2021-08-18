@@ -18,9 +18,6 @@ public class Contact {
     @ColumnInfo
     private String occupation;
 
-    public Contact() {
-    }
-
     public Contact(@NonNull String name, String occupation) {
         this.name = name;
         this.occupation = occupation;

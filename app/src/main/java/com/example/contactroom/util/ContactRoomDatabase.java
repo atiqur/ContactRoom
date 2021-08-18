@@ -2,9 +2,12 @@ package com.example.contactroom.util;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import com.example.contactroom.data.ContactDao;
 import com.example.contactroom.model.Contact;
 import java.util.concurrent.ExecutorService;
@@ -22,10 +25,33 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (ContactRoomDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ContactRoomDatabase.class, "contact_database").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ContactRoomDatabase.class, "contact_database")
+                            .addCallback(sRoomDatabaseCallback)
+                            .build();
                 }
             }
         }
         return INSTANCE;
     }
+
+    private static final RoomDatabase.Callback sRoomDatabaseCallback =
+            new RoomDatabase.Callback() {
+                @Override
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+
+                    databaseWriteExecutor.execute(() -> {
+                        ContactDao contactDao = INSTANCE.contactDao();
+                        contactDao.deleteAll();
+
+                        Contact contact = new Contact("Paulo", "Teacher");
+                        contactDao.insert(contact);
+
+                        contact = new Contact("Atiqur", "Entrepreneur");
+                        contactDao.insert(contact);
+
+                        contact = new Contact("Shehnaz", "Teacher");
+                    });
+                }
+            };
 }
