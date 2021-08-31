@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Contact Room</string>
+    <string name="name_hint">Enter name</string>
+    <string name="occupation_hint">Occupation</string>
+    <string name="save_text">Save</string>
 </resources>
