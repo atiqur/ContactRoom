@@ -3,4 +3,5 @@
     <string name="name_hint">Enter name</string>
     <string name="occupation_hint">Occupation</string>
     <string name="save_text">Save</string>
+    <string name="empty">Enter Information</string>
 </resources>
