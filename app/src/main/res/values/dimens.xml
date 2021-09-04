@@ -3,4 +3,5 @@
     <dimen name="general_padding">10dp</dimen>
     <dimen name="button_margins">10dp</dimen>
     <dimen name="text_margins">10dp</dimen>
+    <dimen name="elevation">12dp</dimen>
 </resources>
