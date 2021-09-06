@@ -2,20 +2,29 @@ package com.example.contactroom;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.contactroom.adapter.RecyclerViewAdapter;
 import com.example.contactroom.model.Contact;
 import com.example.contactroom.model.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final int NEW_CONTACT_ACTIVITY_REQUEST_CODE = 1;
     private ContactViewModel contactViewModel;
     private TextView textView;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private List<Contact> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,16 +32,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.row_name_textview);
 
+        recyclerView = findViewById(R.id.recycle_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         contactViewModel = new ViewModelProvider.AndroidViewModelFactory(MainActivity.this
                 .getApplication())
                 .create(ContactViewModel.class);
 
         contactViewModel.getAllContacts().observe(this, contacts -> {
-            StringBuilder builder = new StringBuilder();
-            for (Contact contact : contacts) {
-                builder.append(" - ").append(contact.getName()).append(" ").append((contact.getOccupation()));
-            }
-            textView.setText(builder.toString());
+            recyclerViewAdapter = new RecyclerViewAdapter(contacts, MainActivity.this);
+            recyclerView.setAdapter(recyclerViewAdapter);
         });
 
         FloatingActionButton fab = findViewById(R.id.add_contact_fab);
