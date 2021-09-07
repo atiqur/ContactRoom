@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.contactroom.adapter.RecyclerViewAdapter;
@@ -18,8 +19,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnContactClickListener {
     public static final int NEW_CONTACT_ACTIVITY_REQUEST_CODE = 1;
+    private static final String TAG = "Clicked";
     private ContactViewModel contactViewModel;
     private TextView textView;
     private RecyclerView recyclerView;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 .create(ContactViewModel.class);
 
         contactViewModel.getAllContacts().observe(this, contacts -> {
-            recyclerViewAdapter = new RecyclerViewAdapter(contacts, MainActivity.this);
+            recyclerViewAdapter = new RecyclerViewAdapter(contacts, MainActivity.this, this);
             recyclerView.setAdapter(recyclerViewAdapter);
         });
 
@@ -64,5 +66,11 @@ public class MainActivity extends AppCompatActivity {
             Contact contact = new Contact(name, occupation);
             ContactViewModel.insert(contact);
         }
+    }
+
+    @Override
+    public void onContactClick(int position) {
+        Contact contact = contactViewModel.allContacts.getValue().get(position);
+        Log.d(TAG, "onContactClick: " + contact.getName());
     }
 }
