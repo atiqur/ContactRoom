@@ -18,6 +18,7 @@ import com.example.contactroom.model.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnContactClickListener {
     public static final int NEW_CONTACT_ACTIVITY_REQUEST_CODE = 1;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     @Override
     public void onContactClick(int position) {
-        Contact contact = contactViewModel.allContacts.getValue().get(position);
+        Contact contact = Objects.requireNonNull(contactViewModel.allContacts.getValue()).get(position);
         Log.d(TAG, "onContactClick: " + contact.getName());
     }
 }
