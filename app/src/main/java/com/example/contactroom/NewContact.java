@@ -48,5 +48,15 @@ public class NewContact extends AppCompatActivity {
             }
             finish();
         });
+
+        Bundle data = getIntent().getExtras();
+        if (data != null) {
+            int id = data.getInt(MainActivity.CONTACT_ID);
+            contactViewModel.get(id).observe(this, contact -> {
+                enterName.setText(contact.getName());
+                enterOccupation.setText(contact.getOccupation());
+
+            });
+        }
     }
 }

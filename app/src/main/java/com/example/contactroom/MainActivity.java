@@ -23,6 +23,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnContactClickListener {
     public static final int NEW_CONTACT_ACTIVITY_REQUEST_CODE = 1;
     private static final String TAG = "Clicked";
+    public static final String CONTACT_ID = "contact_id";
     private ContactViewModel contactViewModel;
     private TextView textView;
     private RecyclerView recyclerView;
@@ -73,5 +74,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void onContactClick(int position) {
         Contact contact = Objects.requireNonNull(contactViewModel.allContacts.getValue()).get(position);
         Log.d(TAG, "onContactClick: " + contact.getName());
+
+        Intent intent = new Intent(MainActivity.this, NewContact.class);
+        intent.putExtra(CONTACT_ID, contact.getId());
+        startActivity(intent);
     }
 }
