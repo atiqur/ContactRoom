@@ -66,31 +66,34 @@ public class NewContact extends AppCompatActivity {
         });
 
         deleteButton = findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(view -> {
-
-        });
+        deleteButton.setOnClickListener(view -> edit(true));
         updateButton = findViewById(R.id.update_button);
-        updateButton.setOnClickListener(view -> {
-            String name = enterName.getText().toString().trim();
-            String occupation = enterOccupation.getText().toString().trim();
-
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(occupation)) {
-                Snackbar.make(enterName, R.string.empty, Snackbar.LENGTH_SHORT).show();
-            } else {
-                Contact contact = new Contact();
-                contact.setId(contactId);
-                contact.setName(name);
-                contact.setOccupation(occupation);
-                ContactViewModel.update(contact);
-                finish();
-            }
-        });
+        updateButton.setOnClickListener(view -> edit(false));
 
         if (isEdit) {
             saveInfoButton.setVisibility(View.GONE);
         } else {
             updateButton.setVisibility(View.GONE);
             deleteButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void edit(Boolean isDelete) {
+        String name = enterName.getText().toString().trim();
+        String occupation = enterOccupation.getText().toString().trim();
+
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(occupation)) {
+            Snackbar.make(enterName, R.string.empty, Snackbar.LENGTH_SHORT).show();
+        } else {
+            Contact contact = new Contact();
+            contact.setId(contactId);
+            contact.setName(name);
+            contact.setOccupation(occupation);
+            if (isDelete)
+                ContactViewModel.delete(contact);
+            else
+                ContactViewModel.update(contact);
+            finish();
         }
     }
 }
